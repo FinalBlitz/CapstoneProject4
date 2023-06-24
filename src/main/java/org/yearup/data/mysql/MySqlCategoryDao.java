@@ -15,7 +15,6 @@ import java.util.List;
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
-    private DataSource dataSource;
     public MySqlCategoryDao(DataSource dataSource)
     {
         super(dataSource);
@@ -30,7 +29,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         ResultSet resultSet;
 
         try {
-            connection = dataSource.getConnection();
+            connection = getConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM categories");
 
