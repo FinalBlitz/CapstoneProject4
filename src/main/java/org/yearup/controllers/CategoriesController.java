@@ -36,11 +36,11 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
-    @GetMapping("categories/id")
+    @GetMapping("{id}")
     public Category getById(@PathVariable int id)
     {
         // get the category by id
-        return null;
+        return categoryDao.getById(id);
     }
 
     // the url to return all products in category 1 would look like this
@@ -59,7 +59,7 @@ public class CategoriesController
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
-        return null;
+        return categoryDao.create(category);
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
