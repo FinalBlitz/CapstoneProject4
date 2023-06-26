@@ -75,6 +75,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+        ResultSet generatedKeys = null;
 
         try {
             connection = getConnection();
@@ -82,13 +83,24 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, category.getName());
             preparedStatement.setString(2, category.getDescription());
-            int rows =
+            int rows = preparedStatement.executeUpdate();
+
+            if(rows == 0) {
+                throw new SQLException("Failure");
+            }
+
+            generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                category.setCategoryId(generatedKeys.getInt(1));
+            } else {
+                throw  new SQLException("Screwed Up");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // create a new category
-        return n;
+        return category;
     }
 
     @Override
